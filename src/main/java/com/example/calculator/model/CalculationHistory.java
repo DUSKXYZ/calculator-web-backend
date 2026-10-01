@@ -34,12 +34,24 @@ public class CalculationHistory {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    /** 这条记录属于哪个用户，用来隔离不同人的历史记录 */
+    @Column(nullable = false)
+    private String username;
+
     /** 保存之前自动填入当前时间 */
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {

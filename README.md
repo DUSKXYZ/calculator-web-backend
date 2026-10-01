@@ -67,23 +67,27 @@ java -jar target/calculator-backend-1.0.0.jar
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
 | id | BIGINT | 主键，自增 |
+| username | VARCHAR | 用户名，用于隔离不同用户的历史记录 |
 | expression | VARCHAR | 计算表达式 |
 | result | VARCHAR | 计算结果 |
 | created_at | TIMESTAMP | 计算时间 |
 
 ## API 接口
 
+所有接口都需要携带用户名，每个用户只能查询、删除自己的历史记录。
+
 | 方法 | 地址 | 说明 |
 | --- | --- | --- |
-| POST | /api/calculate | 计算表达式并保存历史 |
-| GET | /api/history | 查询全部历史记录 |
-| DELETE | /api/history/{id} | 删除指定历史记录 |
-| DELETE | /api/history | 清空全部历史记录 |
+| POST | /api/calculate | 计算表达式并保存历史（请求体带 username） |
+| GET | /api/history?username=xxx | 查询该用户的历史记录 |
+| DELETE | /api/history/{id}?username=xxx | 删除该用户的指定历史记录 |
+| DELETE | /api/history?username=xxx | 清空该用户的全部历史记录 |
 
 计算接口请求示例：
 
 ```json
 {
+  "username": "zhangsan",
   "expression": "(1+2)*3"
 }
 ```

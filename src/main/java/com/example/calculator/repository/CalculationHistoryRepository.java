@@ -13,6 +13,9 @@ import java.util.List;
 @Repository
 public interface CalculationHistoryRepository extends JpaRepository<CalculationHistory, Long> {
 
-    /** 按计算时间倒序查询，让最新的记录显示在最前面 */
-    List<CalculationHistory> findAllByOrderByCreatedAtDesc();
+    /** 按用户名查询历史记录，按计算时间倒序，让最新的记录显示在最前面 */
+    List<CalculationHistory> findByUsernameOrderByCreatedAtDesc(String username);
+
+    /** 删除某个用户的全部历史记录 */
+    void deleteByUsername(String username);
 }
