@@ -9,6 +9,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * 计算历史记录实体类，对应数据库中的 calculation_history 表
@@ -38,11 +39,11 @@ public class CalculationHistory {
     @Column(nullable = false)
     private String username;
 
-    /** 保存之前自动填入当前时间 */
+    /** 保存之前自动填入当前时间（固定用东八区北京时间，避免海外服务器时区差 8 小时） */
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
-            createdAt = LocalDateTime.now();
+            createdAt = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
         }
     }
 
